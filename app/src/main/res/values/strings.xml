@@ -13,7 +13,6 @@
     <string name="choose_a_role">Choose a role</string>
     <string name="enter_your_basic_details">Enter your basic details</string>
     <string name="or_sign_in_with">------------ <u>or sign in with</u> ------------</string>
-    <string name="firebase_web_client_id">1046763611006-s4mh20i1ob111bttf6peluf1gd9e24qi.apps.googleusercontent.com</string>
     <string name="sign_up">Sign Up</string>
     <string name="back_button">back_button</string>
     <string name="continue_">Continue</string>
@@ -40,6 +39,5 @@
     <string name="settings">Settings</string>
     <string name="track_all">Track all</string>
     <string name="out_of_geofence_channel_id">Out of geofence</string>
-    <string name="ONESIGNAL_APP_ID">ca05b82e-edda-47eb-9bea-f3bc9d6e7046</string>
     <string name="enter_your_name">Enter your name</string>
 </resources>

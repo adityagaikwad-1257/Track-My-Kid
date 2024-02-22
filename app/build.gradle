@@ -24,9 +24,13 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField "String", "ONE_SIGNAL_API_KEY", ONE_SIGNL_API_KEY
+            buildConfigField "String", "FIREBASE_WEB_CLIENT_ID", FIREBASE_WEB_CLIENT_KEY
+            buildConfigField "String", "ONE_SIGNAL_APP_ID", ONE_SIGNAL_APP_ID
         }
         debug{
             buildConfigField "String", "ONE_SIGNAL_API_KEY", ONE_SIGNL_API_KEY
+            buildConfigField "String", "FIREBASE_WEB_CLIENT_ID", FIREBASE_WEB_CLIENT_KEY
+            buildConfigField "String", "ONE_SIGNAL_APP_ID", ONE_SIGNAL_APP_ID
         }
     }
     compileOptions {

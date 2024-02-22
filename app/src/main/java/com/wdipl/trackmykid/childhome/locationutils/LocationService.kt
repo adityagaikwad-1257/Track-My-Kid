@@ -16,6 +16,7 @@ import com.wdipl.trackmykid.App
 import com.wdipl.trackmykid.App.Companion.LOCATION_NOTIFICATION_CHANNEL_ID
 import com.wdipl.trackmykid.App.Companion.notificationHelper
 import com.wdipl.trackmykid.App.Companion.prefs
+import com.wdipl.trackmykid.BuildConfig
 import com.wdipl.trackmykid.R
 import com.wdipl.trackmykid.firebase.GEOFENCES
 import com.wdipl.trackmykid.firebase.LOCATIONS
@@ -113,7 +114,7 @@ class LocationService: Service(), LocationClient.DefaultLocationUpdates {
                             prefs?.userData?.connections?.get(0)!!,
                             "${prefs?.userData?.userName} is out of geofence",
                             "${String.format("%.2f", (distance/1000))} kms away from home",
-                            getString(R.string.ONESIGNAL_APP_ID)
+                            BuildConfig.ONE_SIGNAL_APP_ID
                         )
                     }
 

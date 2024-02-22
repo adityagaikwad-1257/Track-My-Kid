@@ -42,7 +42,7 @@ class App: Application()
         OneSignal.Debug.logLevel = LogLevel.VERBOSE
 
         // OneSignal Initialization
-        OneSignal.initWithContext(this, getString(R.string.ONESIGNAL_APP_ID))
+        OneSignal.initWithContext(this, BuildConfig.ONE_SIGNAL_APP_ID)
 
         // requestPermission will show the native Android notification permission prompt.
         // NOTE: It's recommended to use a OneSignal In-App Message to prompt instead.
