@@ -1,0 +1,13 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.TrackMyKid" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/my_color_primary</item>
+        <item name="colorAccent">@color/my_color_accent</item>
+    </style>
+
+    <style name="TransparentBg" parent="Base.Theme.TrackMyKid">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowTranslucentStatus">true</item>
+    </style>
+</resources>

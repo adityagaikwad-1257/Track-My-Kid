@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".parenthome.fragments.ParentNoConnectFragment">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/no_connection_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="@color/white"
+        android:layout_centerInParent="true"
+        android:layout_marginHorizontal="25dp"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:text="@string/connection_code"
+                android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:text="@string/on_the_child_phone_use_this_code_to_connect_and_receive_live_location_updates"
+                android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
+                android:textColor="@color/black"
+                android:textAlignment="center"
+
+                />
+
+            <TextView
+                android:id="@+id/connection_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:text="@string/c_code_hint"
+                android:textAppearance="@style/TextAppearance.Material3.HeadlineLarge"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+
+                android:layout_marginTop="10dp"
+                />
+
+            <com.google.android.material.button.MaterialButton
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="10dp"
+
+                android:text="@string/generate_new_code"
+                android:textColor="@color/white"
+
+                app:rippleColor="@color/white"
+                />
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>

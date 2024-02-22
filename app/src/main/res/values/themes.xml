@@ -1,0 +1,29 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.TrackMyKid" parent="Theme.Material3.DayNight.NoActionBar">
+         <item name="colorPrimary">@color/my_color_primary</item>
+         <item name="colorAccent">@color/my_color_accent</item>
+    </style>
+
+    <style name="Theme.TrackMyKid" parent="Base.Theme.TrackMyKid">
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="AlertDialog" parent="Theme.MaterialComponents.Light.Dialog.Alert">
+        <item name="android:textColor">@color/black</item>
+        <item name="buttonBarPositiveButtonStyle">@style/Alert.Button</item>
+        <item name="buttonBarNegativeButtonStyle">@style/Alert.Button</item>
+    </style>
+
+    <style name="Alert.Button" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="backgroundTint">@android:color/transparent</item>
+        <item name="android:textColor">@color/my_color_primary</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    <style name="TransparentBg" parent="Base.Theme.TrackMyKid">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowTranslucentStatus">true</item>
+    </style>
+</resources>

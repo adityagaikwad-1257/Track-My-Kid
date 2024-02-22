@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1046763611006",
+    "project_id": "location-tracking-app-47d53",
+    "storage_bucket": "location-tracking-app-47d53.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1046763611006:android:89e2bbb695334b79d9492f",
+        "android_client_info": {
+          "package_name": "com.wdipl.trackmykid"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD_Qt6yaDsUEkKHSUcCuf603ASPe7sZDBg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

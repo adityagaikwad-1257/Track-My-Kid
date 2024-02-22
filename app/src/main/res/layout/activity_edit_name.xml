@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent"
+    tools:context=".EditNameActivity">
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/black"
+        android:alpha="0.8"/>
+
+    <EditText
+        android:id="@+id/name_et"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@android:color/transparent"
+
+        android:layout_marginHorizontal="15dp"
+        android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
+        android:textAlignment="center"
+
+        android:autofillHints="name"
+        android:inputType="textPersonName|textCapWords"
+        android:textCursorDrawable="@drawable/cursor"
+
+        android:maxLength="16"
+
+        android:imeOptions="actionDone"
+
+        android:textColor="@color/white"
+        android:textColorHint="@android:color/darker_gray"
+        android:hint="@string/enter_your_name"
+
+        />
+
+
+</RelativeLayout>

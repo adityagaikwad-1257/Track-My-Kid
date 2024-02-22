@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
+    tools:context=".parenthome.ParentHomeActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/toolbar"
+            app:cardBackgroundColor="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="?android:attr/actionBarSize"
+                >
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginBottom="15dp"
+
+                    android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+                    android:textColor="@color/black"
+                    tools:text="Hi, Aditya"
+
+                    android:layout_toStartOf="@id/settings"
+
+                    android:layout_centerVertical="true"
+
+                    />
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/settings"
+                    android:tooltipText="@string/settings"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_toStartOf="@id/profile"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="15dp"
+                    app:cardBackgroundColor="@color/white"
+                    >
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:contentDescription="@string/settings"
+                        android:src="@drawable/ic_settings"/>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/profile"
+                    android:tooltipText="@string/settings"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    app:cardCornerRadius="18dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="15dp"
+                    app:cardBackgroundColor="@color/white"
+                    >
+
+                    <ImageView
+                        android:id="@+id/profile_img"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:contentDescription="@string/settings"
+                        android:src="@drawable/ic_no_user"/>
+
+                </androidx.cardview.widget.CardView>
+
+            </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fcv_parent_home"
+            android:layout_below="@id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+        
+    </RelativeLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

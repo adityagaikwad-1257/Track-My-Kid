@@ -1,0 +1,45 @@
+<resources>
+    <string name="app_name">Track My Kid</string>
+    <string name="enter_your_email">Enter your email</string>
+    <string name="enter_your_password">Enter your password</string>
+    <string name="sign_in">Sign in</string>
+    <string name="forgot_password"><u>Forgot password?</u></string>
+    <string name="don_t_have_an_account_register">Don\'t have an account? <u><b>Register</b></u></string>
+    <string name="already_have_an_account_sign_in">Already have an account? <u><b>Sign in</b></u></string>
+    <string name="create_new_password">Create new password</string>
+    <string name="first_name">First name</string>
+    <string name="last_name">Last name</string>
+    <string name="confirm_your_password">Confirm your password</string>
+    <string name="choose_a_role">Choose a role</string>
+    <string name="enter_your_basic_details">Enter your basic details</string>
+    <string name="or_sign_in_with">------------ <u>or sign in with</u> ------------</string>
+    <string name="firebase_web_client_id">1046763611006-s4mh20i1ob111bttf6peluf1gd9e24qi.apps.googleusercontent.com</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="back_button">back_button</string>
+    <string name="continue_">Continue</string>
+    <string name="sign_out">Sign out</string>
+    <string name="connection_code">Connection code</string>
+    <string name="on_the_child_phone_use_this_code_to_connect_and_receive_live_location_updates">Use this code on your child phone to connect and receive live location updates</string>
+    <string name="c_code_hint">- - - - - -</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="generate_new_code">Generate new code</string>
+    <string name="connect_with_your_parent">Connect with your parent</string>
+    <string name="enter_your_parents_connection_details">Enter your parent\'s connection details</string>
+    <string name="enter_their_email">Enter your parent\'s email</string>
+    <string name="enter_connection_code">Enter connection code</string>
+    <string name="connect">Connect</string>
+    <string name="connected_to">You are connected to:</string>
+    <string name="location_channel_description">Live location updates</string>
+    <string name="geofence">Geofence</string>
+    <string name="geofence_radius">Geofence radius:</string>
+    <string name="update_geofence">Update geofence</string>
+    <string name="long_press_on_map_to_change_the_center_of_the_geofence">(Long press on map to change the center of the geofence)</string>
+    <string name="add_a_geofence">Add a geofence</string>
+    <string name="search_hint">Search places\.\.\.</string>
+    <string name="settings">Settings</string>
+    <string name="track_all">Track all</string>
+    <string name="out_of_geofence_channel_id">Out of geofence</string>
+    <string name="ONESIGNAL_APP_ID">ca05b82e-edda-47eb-9bea-f3bc9d6e7046</string>
+    <string name="enter_your_name">Enter your name</string>
+</resources>
