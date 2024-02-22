@@ -36,7 +36,7 @@ class NotificationHelper(context: Context) {
     fun sendNotification(toEmail: String, title: String, message: String, oneSignalAppId: String){
 
         CoroutineScope(Dispatchers.IO).launch {
-            val response = apiService.sendNotification("Bearer ${BuildConfig.ONE_SIGNAL_API_KEY}",
+            val response = apiService.sendNotification("Bearer ${BuildConfig.ONE_SIGNL_API_KEY}",
                 RequestData().apply {
                     toExternalIds = arrayListOf(toEmail)
                     appId = oneSignalAppId
