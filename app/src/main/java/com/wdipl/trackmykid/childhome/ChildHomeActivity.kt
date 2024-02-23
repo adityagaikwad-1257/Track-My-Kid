@@ -16,16 +16,23 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
+import com.bumptech.glide.Glide
+import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.RemoteMessage
 import com.google.firebase.messaging.ktx.messaging
+import com.google.firebase.storage.ktx.storage
 import com.wdipl.trackmykid.App.Companion.notificationHelper
 import com.wdipl.trackmykid.App.Companion.prefs
+import com.wdipl.trackmykid.EditNameActivity
+import com.wdipl.trackmykid.ProfileDialog
 import com.wdipl.trackmykid.R
 import com.wdipl.trackmykid.childhome.locationutils.LocationService
 import com.wdipl.trackmykid.databinding.ActivityChildHomeBinding
 import com.wdipl.trackmykid.firebase.CONNECTIONS
+import com.wdipl.trackmykid.firebase.PROFILE_IMAGES
+import com.wdipl.trackmykid.firebase.PROFILE_IMAGE_URL
 import com.wdipl.trackmykid.firebase.USERS
 import com.wdipl.trackmykid.firebase.models.UserData
 import com.wdipl.trackmykid.welcome.WelcomeActivity
@@ -42,11 +49,16 @@ class ChildHomeActivity : AppCompatActivity() {
     private lateinit var launcher: ActivityResultLauncher<Array<String>>
     private lateinit var intentLauncher: ActivityResultLauncher<Intent>
 
+    private val profileDialog: ProfileDialog by lazy { ProfileDialog(this) }
+
+    private var imagePickerLauncher: ActivityResultLauncher<Intent>? = null
+    private var resultLauncher: ActivityResultLauncher<Intent>? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivityChildHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.title.text = "Hi, ${prefs?.userData?.userName}"
+        inflateUserData(prefs?.userData)
 
         if (0 == prefs?.userData?.connections?.size){
             binding.connectedView.visibility = GONE
@@ -110,15 +122,102 @@ class ChildHomeActivity : AppCompatActivity() {
             }
         }
 
+        initView()
+
         clickEvents()
     }
 
+    private fun initView(){
+        imagePickerLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == RESULT_OK) {
+                if (prefs?.userData?.email != null && it?.data?.data != null){
+
+                    lifecycleScope.launch {
+                        profileDialog.binding.progress.visibility = VISIBLE
+
+                        val imageUri = Firebase.storage.reference
+                            .child(PROFILE_IMAGES)
+                            .child(prefs?.userData?.email!!)
+                            .putFile(it.data?.data!!).continueWithTask {task ->
+                                if (!task.isSuccessful) return@continueWithTask null
+
+                                Firebase.storage.reference
+                                    .child(PROFILE_IMAGES)
+                                    .child(prefs?.userData?.email!!)
+                                    .downloadUrl
+                            }.await()
+
+                        Firebase.firestore.collection(USERS)
+                            .document(prefs?.userData?.email!!)
+                            .update(PROFILE_IMAGE_URL, imageUri.toString()).await()
+
+                        profileDialog.binding.progress.visibility = GONE
+
+                        Glide.with(this@ChildHomeActivity)
+                            .load(it.data?.data)
+                            .fitCenter()
+                            .error(R.drawable.ic_no_user)
+                            .placeholder(android.R.color.darker_gray)
+                            .into(binding.profileImg)
+
+                        Glide.with(this@ChildHomeActivity)
+                            .load(it.data?.data)
+                            .fitCenter()
+                            .error(R.drawable.ic_no_user)
+                            .placeholder(android.R.color.darker_gray)
+                            .into(profileDialog.binding.userImage)
+
+                        Toast.makeText(
+                            this@ChildHomeActivity,
+                            "Profile image updated.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            } else if (it.resultCode == ImagePicker.RESULT_ERROR) {
+                Toast.makeText(this, ImagePicker.getError(it.data), Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+            if (it.resultCode == RESULT_OK){
+                binding.title.text = "Hi, ${prefs?.userData?.userName}"
+                profileDialog.binding.userName.text = "${prefs?.userData?.userName}"
+            }
+        }
+    }
+
     private fun clickEvents() {
-        binding.signOut.setOnClickListener {
-            stopService(Intent(this, LocationService::class.java))
-            prefs?.sigOutUser()
-            startActivity(Intent(this@ChildHomeActivity, WelcomeActivity::class.java))
-            finish()
+        profileDialog.binding.signOutBtn.setOnClickListener {
+            AlertDialog.Builder(this, R.style.AlertDialog).apply {
+                setTitle("Are you sure?")
+                setMessage("Do you want to sign out?")
+                setPositiveButton("No") { dialog, which -> dialog.dismiss() }
+                setNegativeButton("Yes") { dialog, which ->
+                    dialog.dismiss()
+                    signOut()
+                }
+            }.show()
+        }
+
+        binding.profile.setOnClickListener {
+            profileDialog.show()
+        }
+
+        profileDialog.binding.userImage.setOnClickListener {
+            if (profileDialog.binding.progress.visibility == VISIBLE) return@setOnClickListener
+
+            ImagePicker.with(this)
+                .cropSquare()
+                .compress(512)
+                .galleryOnly()
+                .createIntent {
+                    imagePickerLauncher?.launch(it)
+                }
+        }
+
+        profileDialog.binding.userName.setOnClickListener {
+            resultLauncher?.launch(Intent(this, EditNameActivity::class.java))
         }
 
         binding.connectBtn.setOnClickListener{
@@ -178,6 +277,30 @@ class ChildHomeActivity : AppCompatActivity() {
 
     }
 
+    private fun inflateUserData(userData: UserData?) {
+        if (userData == null) return
+        binding.title.text = "Hi, ${userData.userName}"
+
+        profileDialog.binding.userName.setText("${userData.userName}")
+        profileDialog.binding.userEmail.text = "${userData.email}"
+
+        if (userData.profilePictureUrl != null) {
+            Glide.with(this)
+                .load(userData.profilePictureUrl)
+                .placeholder(android.R.color.darker_gray)
+                .error(R.drawable.ic_no_user)
+                .fitCenter()
+                .into(profileDialog.binding.userImage)
+
+            Glide.with(this)
+                .load(userData.profilePictureUrl)
+                .placeholder(android.R.color.darker_gray)
+                .error(R.drawable.ic_no_user)
+                .fitCenter()
+                .into(binding.profileImg)
+        }
+    }
+
     private fun inflateParentsDetails(parentEmail: String?) {
         if (parentEmail == null) return
 
@@ -215,5 +338,12 @@ class ChildHomeActivity : AppCompatActivity() {
         }
 
         return allOkay
+    }
+
+    fun signOut(){
+        stopService(Intent(this, LocationService::class.java))
+        prefs?.sigOutUser()
+        startActivity(Intent(this@ChildHomeActivity, WelcomeActivity::class.java))
+        finish()
     }
 }

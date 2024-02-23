@@ -1,5 +1,6 @@
 package com.wdipl.trackmykid.parenthome
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -51,6 +52,7 @@ class TrackingUsersAdapter: ListAdapter<TrackingUser, TrackingUsersAdapter.Track
             prefs?.noTrackingUsers = noTrackingUsers
 
             updateTracker?.invoke(getItem(position).email, isChecked)
+            Log.d("adityatesting", "onBindViewHolder: $updateTracker")
         }
     }
 }

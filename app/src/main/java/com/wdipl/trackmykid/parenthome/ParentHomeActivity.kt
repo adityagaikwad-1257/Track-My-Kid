@@ -98,8 +98,10 @@ class ParentHomeActivity : AppCompatActivity() {
                         if (doc != null && doc.exists()) {
                             val userData = doc.toObject(UserData::class.java)
                             if (userData != null && userData.connections.size > 0) {
+                                val mapsFragment = MapsFragment.create()
+                                trackingUsersAdapter.updateTracker = mapsFragment::updateCurrentMarkerForUser
                                 supportFragmentManager.beginTransaction()
-                                    .replace(R.id.fcv_parent_home, MapsFragment.create())
+                                    .replace(R.id.fcv_parent_home, mapsFragment)
                                     .commitAllowingStateLoss()
                             } else {
                                 supportFragmentManager.beginTransaction()

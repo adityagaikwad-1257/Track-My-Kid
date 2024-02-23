@@ -22,6 +22,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.onesignal.OneSignal
 import com.wdipl.trackmykid.App.Companion.prefs
+import com.wdipl.trackmykid.ForgetPasswordDialog
 import com.wdipl.trackmykid.R
 import com.wdipl.trackmykid.childhome.ChildHomeActivity
 import com.wdipl.trackmykid.databinding.FragmentSignInBinding
@@ -56,6 +57,8 @@ class SignInFragment() : Fragment() {
     private var auth = Firebase.auth
 
     private lateinit var launcher: ActivityResultLauncher<IntentSenderRequest>
+
+    private val forgotPwdDialog: ForgetPasswordDialog by lazy { ForgetPasswordDialog(requireContext()) }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -143,7 +146,7 @@ class SignInFragment() : Fragment() {
         }
 
         binding.forgotPassword.setOnClickListener {
-
+            forgotPwdDialog.show()
         }
 
         binding.googleSignIn.setOnClickListener {
@@ -157,6 +160,32 @@ class SignInFragment() : Fragment() {
                 }else{
                     binding.progress.root.visibility = GONE
                 }
+            }
+        }
+
+        forgotPwdDialog.binding.send.setOnClickListener {
+            if (forgotPwdDialog.binding.email.editText?.text?.trim()?.isEmpty() == true){
+                forgotPwdDialog.binding.email.error = "Required"
+                return@setOnClickListener
+            }
+
+            forgotPwdDialog.binding.email.error = null
+            sendPasswordResetEmail(forgotPwdDialog.binding.email.editText?.text.toString())
+        }
+    }
+
+    private fun sendPasswordResetEmail(email: String) {
+        lifecycleScope.launch {
+            forgotPwdDialog.dismiss()
+            binding.progress.root.visibility = VISIBLE
+            try {
+                Firebase.auth.sendPasswordResetEmail(email).await()
+                Toast.makeText(requireContext(), "Email sent successfully, if email exist.", Toast.LENGTH_SHORT)
+                    .show()
+            } catch (e: Exception) {
+                Toast.makeText(requireContext(), "${e.message}", Toast.LENGTH_SHORT).show()
+            }finally {
+                binding.progress.root.visibility = GONE
             }
         }
     }

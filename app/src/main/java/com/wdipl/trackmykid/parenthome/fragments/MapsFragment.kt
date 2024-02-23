@@ -5,6 +5,8 @@ import android.app.Activity
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.location.Geocoder
+import android.location.Location
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -46,6 +48,7 @@ import com.wdipl.trackmykid.firebase.models.GeofenceData
 import com.wdipl.trackmykid.firebase.models.LocationUpdate
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import java.util.Locale
 
 class MapsFragment : Fragment() {
     
@@ -97,28 +100,35 @@ class MapsFragment : Fragment() {
             binding.updateGeofenceBtn.isEnabled = true
             binding.radiusSeek.isEnabled = true
         }
-        
+
         if (prefs?.userData?.email != null){
-            Firebase.firestore.collection(LOCATIONS)
-                .document(prefs?.userData?.email!!)
-                .collection(LOCATIONS).addSnapshotListener { locations_snap, error -> 
-                    if (error != null){
-                        Toast.makeText(context, "${error.message}", Toast.LENGTH_SHORT).show()
-                        return@addSnapshotListener
-                    }
+            lifecycleScope.launch {
+                currentGeofence = Firebase.firestore.collection(GEOFENCES)
+                    .document(prefs?.userData?.email!!).get().await().toObject(GeofenceData::class.java)
 
-                    locations_snap?.documentChanges?.forEach {
-                        val locationUpdate = it.document.toObject(LocationUpdate::class.java)
+                inflateCurrentGeofence()
 
-                        if (prefs?.noTrackingUsers?.contains(it.document.id) == false) {
-                            updateCurrentLocationMarker(it.document.id,
-                                locationUpdate.name?:"No name",
-                                LatLng(locationUpdate.geoPoint.latitude, locationUpdate.geoPoint.longitude))
+                Firebase.firestore.collection(LOCATIONS)
+                    .document(prefs?.userData?.email!!)
+                    .collection(LOCATIONS).addSnapshotListener { locations_snap, error ->
+                        if (error != null){
+                            Toast.makeText(context, "${error.message}", Toast.LENGTH_SHORT).show()
+                            return@addSnapshotListener
                         }
 
-                        locationUpdatesMap[it.document.id] = locationUpdate
+                        locations_snap?.documentChanges?.forEach {
+                            val locationUpdate = it.document.toObject(LocationUpdate::class.java)
+
+                            if (prefs?.noTrackingUsers?.contains(it.document.id) == false) {
+                                updateCurrentLocationMarker(it.document.id,
+                                    locationUpdate.name?:"No name",
+                                    LatLng(locationUpdate.geoPoint.latitude, locationUpdate.geoPoint.longitude))
+                            }
+
+                            locationUpdatesMap[it.document.id] = locationUpdate
+                        }
                     }
-                }
+            }
         }
     }
 
@@ -162,15 +172,6 @@ class MapsFragment : Fragment() {
         }
 
         searchIntent = Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, listOf(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG)).build(requireContext())
-
-        if (prefs?.userData?.email != null){
-            lifecycleScope.launch {
-                currentGeofence = Firebase.firestore.collection(GEOFENCES)
-                    .document(prefs?.userData?.email!!).get().await().toObject(GeofenceData::class.java)
-
-                inflateCurrentGeofence()
-            }
-        }
 
         initViews()
 
@@ -339,11 +340,37 @@ class MapsFragment : Fragment() {
         val marker = mGoogleMap.addMarker(
             MarkerOptions()
                 .position(latLng)
-                .title("$title at New link road")
+                .title(title)
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_cur_loc_marker))
         )
 
         if (marker != null) currentLocMarkers[email] = marker
+
+        lifecycleScope.launch {
+            if (currentGeofence != null) {
+                val homeLocation = Location("home")
+                homeLocation.latitude = currentGeofence!!.homeLat
+                homeLocation.longitude = currentGeofence!!.homeLng
+
+                val currentLocation = Location("current")
+                currentLocation.latitude = latLng.latitude
+                currentLocation.longitude = latLng.longitude
+
+                if (homeLocation.distanceTo(currentLocation) <= currentGeofence!!.radius){
+                    marker?.title = "$title is at home"
+                    return@launch
+                }
+            }
+
+            try {
+                val addresses = Geocoder(requireContext(), Locale.getDefault()).getFromLocation(latLng.latitude, latLng.longitude, 1)
+                if (!addresses.isNullOrEmpty()){
+                    marker?.title = "$title is at ${addresses[0].thoroughfare?:addresses[0].subLocality}"
+                }
+            } catch (e: Exception) {
+                // do nothing
+            }
+        }
     }
 
     fun updateCircle(radius: Double?){

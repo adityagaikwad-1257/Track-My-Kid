@@ -40,10 +40,11 @@
                     />
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/sign_out"
-                    android:tooltipText="@string/sign_out"
+                    android:id="@+id/profile"
+                    android:tooltipText="@string/settings"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
+                    app:cardCornerRadius="18dp"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="15dp"
@@ -51,11 +52,12 @@
                     >
 
                     <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:id="@+id/profile_img"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_gravity="center"
-                        android:contentDescription="@string/sign_out"
-                        android:src="@drawable/ic_sign_out"/>
+                        android:contentDescription="@string/settings"
+                        android:src="@drawable/ic_no_user"/>
 
                 </androidx.cardview.widget.CardView>
 

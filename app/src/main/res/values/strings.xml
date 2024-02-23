@@ -40,4 +40,6 @@
     <string name="track_all">Track all</string>
     <string name="out_of_geofence_channel_id">Out of geofence</string>
     <string name="enter_your_name">Enter your name</string>
+    <string name="an_email_will_be_sent_which_will_contain_a_link_for_resetting_your_password">An email will be sent, which will contain a link for resetting your password.</string>
+    <string name="send_reset_link">Send reset link</string>
 </resources>
